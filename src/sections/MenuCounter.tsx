@@ -6,7 +6,12 @@ type Filter = "all" | MenuCategory;
 
 export default function MenuCounter({ locale }: { locale: Locale }) {
   const [filter, setFilter] = useState<Filter>("all");
-  const items = filter === "all" ? site.menu : site.menu.filter((item) => item.category === filter);
+  const groups = site.menuCategories
+    .filter((category) => filter === "all" || category.id === filter)
+    .map((category) => ({
+      ...category,
+      items: site.menu.filter((item) => item.category === category.id),
+    }));
 
   return (
     <section className="menu-section" id="menu" aria-labelledby="menu-title">
@@ -51,17 +56,25 @@ export default function MenuCounter({ locale }: { locale: Locale }) {
         ))}
       </div>
       <div className="menu-counter" aria-live="polite">
-        {items.map((item) => (
-          <article className={`menu-item menu-item--${item.category}`} key={item.id}>
-            <p className="menu-item__name">{item.name[locale]}</p>
-            <p>
-              {item.priceSar === null ? (
-                item.unknownPriceLabel?.[locale] ?? site.copy.menu.unavailable[locale]
-              ) : (
-                <bdi>{item.priceSar} {site.copy.menu.currency[locale]}</bdi>
-              )}
-            </p>
-          </article>
+        {groups.map((group) => (
+          <section className="menu-group" key={group.id} aria-labelledby={"menu-group-" + group.id}>
+            <h3 className="menu-group__title" id={"menu-group-" + group.id}>
+              <span>{group.label[locale]}</span>
+              <bdi>{String(group.items.length).padStart(2, "0")}</bdi>
+            </h3>
+            {group.items.map((item) => (
+              <article className={"menu-item menu-item--" + item.category} key={item.id}>
+                <p className="menu-item__name">{item.name[locale]}</p>
+                <p>
+                  {item.priceSar === null ? (
+                    item.unknownPriceLabel?.[locale] ?? site.copy.menu.unavailable[locale]
+                  ) : (
+                    <bdi>{item.priceSar} {site.copy.menu.currency[locale]}</bdi>
+                  )}
+                </p>
+              </article>
+            ))}
+          </section>
         ))}
       </div>
     </section>

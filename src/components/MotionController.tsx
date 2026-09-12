@@ -10,25 +10,26 @@ export default function MotionController() {
     const context = gsap.context(() => {
       media.add("(prefers-reduced-motion: no-preference)", () => {
         const isRtl = document.documentElement.dir === "rtl";
+        const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
-        gsap.timeline({ delay: 0.78, defaults: { ease: "power3.out" } })
+        gsap.timeline({ delay: isMobile ? 0.72 : 0.78, defaults: { ease: "power3.out" } })
           .from(".hero-place", { autoAlpha: 0, x: isRtl ? 28 : -28, duration: 0.55 })
-          .from(".hero h1", { clipPath: "inset(0 0 100% 0)", yPercent: 30, duration: 0.9 }, "-=0.22")
-          .from(".hero-intro", { autoAlpha: 0, y: 24, duration: 0.58 }, "-=0.42")
+          .from(".hero h1", { clipPath: "inset(0 0 100% 0)", yPercent: isMobile ? 22 : 30, duration: isMobile ? 0.78 : 0.9 }, "-=0.22")
+          .from(".hero-intro", { autoAlpha: 0, y: isMobile ? 18 : 24, duration: isMobile ? 0.5 : 0.58 }, "-=0.42")
           .from(".hero-drink", {
             autoAlpha: 0,
             clipPath: isRtl ? "inset(0 12% 0 0)" : "inset(0 0 0 12%)",
-            xPercent: isRtl ? -5 : 5,
-            scale: 0.94,
-            duration: 0.95,
+            xPercent: isRtl ? (isMobile ? -3 : -5) : (isMobile ? 3 : 5),
+            scale: isMobile ? 0.96 : 0.94,
+            duration: isMobile ? 0.82 : 0.95,
           }, "-=0.64")
           .from(".hero-media img", { scale: 1.12, duration: 1.15 }, "-=0.9")
           .from(".hero-drink p", { autoAlpha: 0, y: 18, duration: 0.48 }, "-=0.42")
           .from(".scroll-cue", { autoAlpha: 0, y: 10, duration: 0.35 }, "-=0.18");
 
         gsap.to(".hero-media img", {
-          yPercent: 8,
-          scale: 1.06,
+          yPercent: isMobile ? 5 : 8,
+          scale: isMobile ? 1.035 : 1.06,
           ease: "none",
           scrollTrigger: {
             trigger: ".hero",
@@ -41,19 +42,19 @@ export default function MotionController() {
         gsap.from(".story", {
           autoAlpha: 0,
           clipPath: "inset(0 0 18% 0)",
-          y: 42,
-          scale: 0.965,
-          duration: 0.72,
-          stagger: 0.1,
+          y: isMobile ? 28 : 42,
+          scale: isMobile ? 0.975 : 0.965,
+          duration: isMobile ? 0.62 : 0.72,
+          stagger: isMobile ? 0.08 : 0.1,
           ease: "power3.out",
-          scrollTrigger: { trigger: ".story-strip", start: "top 82%", once: true },
+          scrollTrigger: { trigger: ".story-strip", start: isMobile ? "top 88%" : "top 82%", once: true },
         });
 
         gsap.from(".menu-visual", {
           autoAlpha: 0,
-          y: 34,
-          scale: 0.94,
-          duration: 0.68,
+          y: isMobile ? 22 : 34,
+          scale: isMobile ? 0.97 : 0.94,
+          duration: isMobile ? 0.58 : 0.68,
           stagger: 0.07,
           ease: "power3.out",
           scrollTrigger: { trigger: ".menu-visuals", start: "top 86%", once: true },
@@ -67,8 +68,8 @@ export default function MotionController() {
             ease: "none",
             scrollTrigger: {
               trigger: ".menu-section",
-              start: "top 82%",
-              end: "top 18%",
+              start: isMobile ? "top 90%" : "top 82%",
+              end: isMobile ? "top 48%" : "top 18%",
               scrub: 0.28,
             },
           },
@@ -82,8 +83,8 @@ export default function MotionController() {
             ease: "power2.out",
             scrollTrigger: {
               trigger: ".menu-section",
-              start: "top 30%",
-              end: "top 14%",
+              start: isMobile ? "top 56%" : "top 30%",
+              end: isMobile ? "top 42%" : "top 14%",
               scrub: 0.2,
             },
           },
@@ -97,11 +98,11 @@ export default function MotionController() {
           gsap.from(frame, {
             autoAlpha: 0,
             clipPath: index === 0 ? "inset(0 22% 0 0)" : "inset(0 0 0 22%)",
-            xPercent: index === 0 ? -5 : 5,
-            scale: 0.97,
-            duration: 0.88,
+            xPercent: index === 0 ? (isMobile ? -3 : -5) : (isMobile ? 3 : 5),
+            scale: isMobile ? 0.98 : 0.97,
+            duration: isMobile ? 0.72 : 0.88,
             ease: "power3.out",
-            scrollTrigger: { trigger: scene, start: "top 84%", once: true },
+            scrollTrigger: { trigger: scene, start: isMobile ? "top 88%" : "top 84%", once: true },
           });
 
           gsap.fromTo(image, { yPercent: -4 }, {
@@ -128,31 +129,31 @@ export default function MotionController() {
         gsap.utils.toArray<HTMLElement>(".film-frame").forEach((frame, index) => {
           gsap.from(frame, {
             autoAlpha: 0,
-            x: index % 2 === 0 ? -46 : 46,
-            y: 30 + (index % 3) * 12,
-            rotate: index % 2 === 0 ? -1.4 : 1.4,
-            scale: 0.93,
-            duration: 0.82,
+            x: index % 2 === 0 ? (isMobile ? -24 : -46) : (isMobile ? 24 : 46),
+            y: isMobile ? 22 + (index % 2) * 8 : 30 + (index % 3) * 12,
+            rotate: index % 2 === 0 ? (isMobile ? -0.7 : -1.4) : (isMobile ? 0.7 : 1.4),
+            scale: isMobile ? 0.96 : 0.93,
+            duration: isMobile ? 0.68 : 0.82,
             ease: "power3.out",
-            scrollTrigger: { trigger: frame, start: "top 88%", once: true },
+            scrollTrigger: { trigger: frame, start: isMobile ? "top 92%" : "top 88%", once: true },
           });
         });
 
         gsap.from(".visit-heading, .hours-arc, .visit-details", {
           autoAlpha: 0,
-          y: 38,
-          duration: 0.72,
-          stagger: 0.12,
+          y: isMobile ? 26 : 38,
+          duration: isMobile ? 0.62 : 0.72,
+          stagger: isMobile ? 0.09 : 0.12,
           ease: "power3.out",
           scrollTrigger: { trigger: ".visit-section", start: "top 82%", once: true },
         });
 
         gsap.from(".visit-qr h3, .qr-link", {
           autoAlpha: 0,
-          y: 28,
-          scale: 0.95,
-          duration: 0.58,
-          stagger: 0.08,
+          y: isMobile ? 20 : 28,
+          scale: isMobile ? 0.97 : 0.95,
+          duration: isMobile ? 0.5 : 0.58,
+          stagger: isMobile ? 0.06 : 0.08,
           ease: "power3.out",
           scrollTrigger: { trigger: ".visit-qr", start: "top 88%", once: true },
         });
