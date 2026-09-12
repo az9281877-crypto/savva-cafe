@@ -56,7 +56,7 @@ export default function MotionController() {
           },
         );
 
-        gsap.utils.toArray<HTMLElement>(".space-scene .media-placeholder").forEach((scene, index) => {
+        gsap.utils.toArray<HTMLElement>(".space-scene .media-frame").forEach((scene, index) => {
           gsap.from(scene, {
             clipPath: index === 0 ? "inset(0 0 0 18%)" : "inset(0 18% 0 0)",
             duration: 0.72,

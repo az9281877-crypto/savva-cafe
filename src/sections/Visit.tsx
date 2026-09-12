@@ -4,6 +4,12 @@ import { withBase } from "../lib/paths";
 export default function Visit({ locale }: { locale: Locale }) {
   const copy = site.copy.visit;
   const hours = site.hours.daily;
+  const qrLinks = [
+    { id: "maps", href: site.links.maps, file: "/qr/google-maps.svg", label: copy.qrMaps[locale], detail: "Google Maps" },
+    { id: "instagram", href: site.links.instagram, file: "/qr/instagram.svg", label: copy.qrInstagram[locale], detail: "Instagram" },
+    { id: "website", href: site.links.website, file: "/qr/website.svg", label: copy.qrWebsite[locale], detail: "savva-cafe" },
+    { id: "menu", href: site.links.menu, file: "/qr/menu.svg", label: copy.qrMenu[locale], detail: "savva-cafe/#menu" },
+  ];
 
   return (
     <section className="visit-section" id="visit" aria-labelledby="visit-title">
@@ -32,14 +38,12 @@ export default function Visit({ locale }: { locale: Locale }) {
       <div className="visit-qr">
         <h3>{copy.qrTitle[locale]}</h3>
         <div className="visit-qr__grid">
-          <a className="qr-link" href={site.links.maps}>
-            <img src={withBase(import.meta.env.BASE_URL, "/qr/google-maps.svg")} width="512" height="512" loading="lazy" alt={copy.qrMaps[locale]} />
-            <span>{copy.qrMaps[locale]} <bdi>Google Maps</bdi></span>
-          </a>
-          <a className="qr-link" href={site.links.instagram}>
-            <img src={withBase(import.meta.env.BASE_URL, "/qr/instagram.svg")} width="512" height="512" loading="lazy" alt={copy.qrInstagram[locale]} />
-            <span>{copy.qrInstagram[locale]} <bdi>Instagram</bdi></span>
-          </a>
+          {qrLinks.map((qr) => (
+            <a className="qr-link" href={qr.href} key={qr.id}>
+              <img src={withBase(import.meta.env.BASE_URL, qr.file)} width="512" height="512" loading="lazy" alt={qr.label} />
+              <span>{qr.label} <bdi>{qr.detail}</bdi></span>
+            </a>
+          ))}
         </div>
       </div>
     </section>

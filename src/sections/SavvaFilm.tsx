@@ -25,30 +25,41 @@ export default function SavvaFilm({ locale }: { locale: Locale }) {
         <p>{copy.intro[locale]}</p>
       </div>
       <div className="film-grid">
-        {site.gallery.map((item) => (
-          <figure className={`film-frame film-frame--${item.id}`} key={item.id}>
-            <button
-              className="film-like"
-              type="button"
-              aria-label={copy.reaction[locale]}
-              aria-pressed={heart === item.id}
-              onClick={(event) => {
-                if (event.detail === 0) showHeart(item.id);
-              }}
-              onDoubleClick={() => showHeart(item.id)}
-              onPointerUp={(event) => {
-                if (event.pointerType !== "touch") return;
-                const now = window.performance.now();
-                if (now - (lastTap.current[item.id] ?? 0) < 360) showHeart(item.id);
-                lastTap.current[item.id] = now;
-              }}
-            >
-              <Media alt={item.label[locale]} label={copy.pending[locale]} tone={item.tone} ratio={item.ratio} />
-              <span className={`film-heart ${heart === item.id ? "film-heart--visible" : ""}`} aria-hidden="true">♥</span>
-            </button>
-            <figcaption>{item.label[locale]}</figcaption>
-          </figure>
-        ))}
+        {site.gallery.map((item) => {
+          const asset = site.media[item.asset];
+          return (
+            <figure className={`film-frame film-frame--${item.id}`} key={item.id}>
+              <button
+                className="film-like"
+                type="button"
+                aria-label={`${item.label[locale]}. ${copy.reaction[locale]}`}
+                aria-pressed={heart === item.id}
+                onClick={(event) => {
+                  if (event.detail === 0) showHeart(item.id);
+                }}
+                onDoubleClick={() => showHeart(item.id)}
+                onPointerUp={(event) => {
+                  if (event.pointerType !== "touch") return;
+                  const now = window.performance.now();
+                  if (now - (lastTap.current[item.id] ?? 0) < 360) showHeart(item.id);
+                  lastTap.current[item.id] = now;
+                }}
+              >
+                <Media
+                  alt={item.label[locale]}
+                  src={asset.src}
+                  width={asset.width}
+                  height={asset.height}
+                  position={asset.position}
+                  credit={asset.demo ? copy.demoLabel[locale] : undefined}
+                  ratio={item.ratio}
+                />
+                <span className={`film-heart ${heart === item.id ? "film-heart--visible" : ""}`} aria-hidden="true">♥</span>
+              </button>
+              <figcaption>{item.label[locale]}</figcaption>
+            </figure>
+          );
+        })}
       </div>
       <a className="text-link" href={site.links.instagram}>{copy.cta[locale]} <span aria-hidden="true">↗</span></a>
     </section>

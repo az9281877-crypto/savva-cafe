@@ -9,6 +9,8 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const qrTargets = {
   "google-maps.svg": site.links.maps,
   "instagram.svg": site.links.instagram,
+  "website.svg": site.links.website,
+  "menu.svg": site.links.menu,
 };
 
 export async function generateQrAssets(outputDirectory = resolve(projectRoot, "public/qr")) {
@@ -26,7 +28,7 @@ export async function generateQrAssets(outputDirectory = resolve(projectRoot, "p
           light: "#FFF8EF",
         },
       });
-      await writeFile(resolve(outputDirectory, fileName), `${svg}\n`, "utf8");
+      await writeFile(resolve(outputDirectory, fileName), `${svg.trimEnd()}\n`, "utf8");
     }),
   );
 }

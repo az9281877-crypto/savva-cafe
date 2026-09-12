@@ -41,6 +41,8 @@ test("the brief's menu prices and business links stay intact", () => {
   assert.equal(site.links.whatsapp, "https://wa.me/966564370303");
   assert.equal(site.links.instagram, "https://www.instagram.com/savva_cafe");
   assert.equal(site.links.maps, "https://maps.app.goo.gl/geB2uSVz2UD7soM46");
+  assert.equal(site.links.website, "https://az9281877-crypto.github.io/savva-cafe/");
+  assert.equal(site.links.menu, "https://az9281877-crypto.github.io/savva-cafe/#menu");
   assert.equal(site.menu.find(({ id }) => id === "savva-melon")?.unknownPriceLabel?.ar, "اسأل الباريستا");
 });
 
@@ -61,15 +63,21 @@ test("SEO content and generated QR targets stay tied to the site config", async 
   );
   assert.match(generator, /site\.links\.maps/);
   assert.match(generator, /site\.links\.instagram/);
+  assert.match(generator, /site\.links\.website/);
+  assert.match(generator, /site\.links\.menu/);
 
   const qrTargets = {
     "google-maps.svg": site.links.maps,
     "instagram.svg": site.links.instagram,
+    "website.svg": site.links.website,
+    "menu.svg": site.links.menu,
   };
 
   assert.deepEqual(qrTargets, {
     "google-maps.svg": site.links.maps,
     "instagram.svg": site.links.instagram,
+    "website.svg": site.links.website,
+    "menu.svg": site.links.menu,
   });
 
   for (const fileName of Object.keys(qrTargets)) {

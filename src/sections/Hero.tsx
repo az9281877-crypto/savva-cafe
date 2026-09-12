@@ -1,7 +1,9 @@
+import Media from "../components/Media";
 import { site, type Locale } from "../content/site";
 
 export default function Hero({ locale }: { locale: Locale }) {
   const copy = site.copy.hero;
+  const asset = site.media.melon;
 
   return (
     <section className="hero" id="home" aria-labelledby="hero-title">
@@ -10,15 +12,19 @@ export default function Hero({ locale }: { locale: Locale }) {
         <h1 id="hero-title">{copy.title[locale]}</h1>
         <p className="hero-intro">{copy.intro[locale]}</p>
       </div>
-      <div className="hero-drink" role="img" aria-label={copy.mediaPending[locale]}>
-        <div className="hero-sun" aria-hidden="true" />
-        <div className="glass" aria-hidden="true">
-          <span className="glass-highlight" />
-          <span className="glass-liquid" />
-          <span className="glass-label">ساڤا</span>
-        </div>
+      <div className="hero-drink">
+        <Media
+          className="hero-media"
+          src={asset.src}
+          width={asset.width}
+          height={asset.height}
+          position={asset.position}
+          alt={locale === "ar" ? "مشروب شمام بارد مثلج" : "Ice-cold melon drink"}
+          ratio="portrait"
+          credit={site.copy.gallery.demoLabel[locale]}
+          eager
+        />
         <p>{copy.signature[locale]}</p>
-        <small>{copy.mediaPending[locale]}</small>
       </div>
       <a className="scroll-cue" href="#stories">
         <span>{copy.scroll[locale]}</span>

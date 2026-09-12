@@ -9,20 +9,26 @@ export default function StoryStrip({ locale }: { locale: Locale }) {
         <p>{site.copy.stories.intro[locale]}</p>
       </div>
       <div className="story-strip">
-        {site.stories.map((story, index) => (
-          <article className="story" key={story.id}>
-            <Media
-              alt={story.media[locale]}
-              label={site.copy.gallery.pending[locale]}
-              tone={story.tone}
-              ratio="portrait"
-            />
-            <div className="story-caption">
-              <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-              <p>{story[locale]}</p>
-            </div>
-          </article>
-        ))}
+        {site.stories.map((story, index) => {
+          const asset = site.media[story.asset];
+          return (
+            <article className="story" key={story.id}>
+              <Media
+                alt={story.media[locale]}
+                src={asset.src}
+                width={asset.width}
+                height={asset.height}
+                position={asset.position}
+                credit={asset.demo ? site.copy.gallery.demoLabel[locale] : undefined}
+                ratio="portrait"
+              />
+              <div className="story-caption">
+                <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                <p>{story[locale]}</p>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

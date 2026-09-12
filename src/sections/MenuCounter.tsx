@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Media from "../components/Media";
 import { site, type Locale, type MenuCategory } from "../content/site";
 
 type Filter = "all" | MenuCategory;
@@ -18,6 +19,24 @@ export default function MenuCounter({ locale }: { locale: Locale }) {
           <span className="menu-pour__label">ساڤا</span>
         </div>
       </div>
+      <div className="menu-visuals" aria-label={site.copy.menu.title[locale]}>
+        {site.menuVisuals.map((visual) => {
+          const asset = site.media[visual.asset];
+          return (
+            <Media
+              key={visual.id}
+              className="menu-visual"
+              alt={visual.label[locale]}
+              src={asset.src}
+              width={asset.width}
+              height={asset.height}
+              position={asset.position}
+              credit={asset.demo ? site.copy.gallery.demoLabel[locale] : undefined}
+              ratio="portrait"
+            />
+          );
+        })}
+      </div>
       <div className="menu-filters" role="group" aria-label={site.copy.menu.filterLabel[locale]}>
         <button type="button" aria-pressed={filter === "all"} onClick={() => setFilter("all")}>{site.copy.menu.all[locale]}</button>
         {site.menuCategories.map((category) => (
@@ -34,7 +53,7 @@ export default function MenuCounter({ locale }: { locale: Locale }) {
       <div className="menu-counter" aria-live="polite">
         {items.map((item) => (
           <article className={`menu-item menu-item--${item.category}`} key={item.id}>
-            <h3>{item.name[locale]}</h3>
+            <p className="menu-item__name">{item.name[locale]}</p>
             <p>
               {item.priceSar === null ? (
                 item.unknownPriceLabel?.[locale] ?? site.copy.menu.unavailable[locale]
