@@ -1911,8 +1911,11 @@ h2,
   }
 
   .menu-section {
+    position: relative;
     display: block;
     padding-block: 3.75rem 4.25rem;
+    overflow: visible;
+    isolation: isolate;
   }
 
   .menu-heading {
@@ -1982,16 +1985,21 @@ h2,
 
   .menu-filters {
     position: sticky;
-    inset-block-start: 0.5rem;
-    z-index: 8;
+    inset-block-start: max(0.5rem, env(safe-area-inset-top));
+    z-index: 30;
     flex-wrap: nowrap;
     gap: 0.45rem;
     margin: 0 calc(var(--page-gutter) * -1) 1.5rem;
-    padding: 0.45rem var(--page-gutter);
+    padding: 0.55rem var(--page-gutter);
     overflow-x: auto;
-    background: rgb(59 42 34 / 94%);
-    backdrop-filter: blur(0.55rem);
+    overscroll-behavior-inline: contain;
+    border-block: 1px solid rgb(255 248 239 / 14%);
+    background: rgb(59 42 34 / 96%);
+    box-shadow: 0 0.8rem 1.8rem rgb(26 20 16 / 24%);
+    backdrop-filter: blur(0.7rem);
+    scroll-snap-type: inline proximity;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
   .menu-filters::-webkit-scrollbar {
@@ -2003,6 +2011,7 @@ h2,
     min-height: 2.75rem;
     padding-inline: 0.85rem;
     white-space: nowrap;
+    scroll-snap-align: start;
   }
 
   .menu-counter {
